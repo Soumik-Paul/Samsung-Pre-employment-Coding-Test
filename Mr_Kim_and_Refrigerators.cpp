@@ -57,7 +57,7 @@ point cust[20];
 point office,home;
 
 
-void func(int cur,int rem, int *visited,int cost,int n)
+void func(int cur,int rem, int *visited,int cost)
 {
 
 
@@ -79,7 +79,7 @@ void func(int cur,int rem, int *visited,int cost,int n)
          	temp = cost + abs(office.x - cust[i].x)+abs(office.y - cust[i].y);
          else 
          	temp = cost + abs(cust[cur].x - cust[i].x)+abs(cust[cur].y - cust[i].y);
-         func(i,rem-1,visited,temp,n);
+         func(i,rem-1,visited,temp);
          visited[i]=0;
       }
    }
@@ -98,17 +98,18 @@ main()
 	while(tt--)
 	{
 		id++;
-		int n,i;
+		int i;
 		ans=10000001;
 		int vis[20];
 		cin>>n;
+
 		cin>>office.x>>office.y>>home.x>>home.y ;
 		for(i=1;i<=n;i++){
 			cin>>cust[i].x>>cust[i].y ;
 			vis[i]=0;
 		}
 
-	func(0,n,vis,0,n);
+	func(0,n,vis,0);
 	cout << "# " << id<< " " << ans << endl;
 
 	}
