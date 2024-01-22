@@ -31,23 +31,21 @@ using namespace std;
 int  color[15];
 vector<int> adj[15];
 #define pb push_back
+int flag= 0;
 
 
-bool dfs(int node,int col)
+void dfs(int node,int col)
 {
 	color[node]=col;
 	for(auto it: adj[node])
 	{
 		if(color[it]==-1)
-		{
-			bool check= dfs(it,!col);
-			if(!check) return false;
-		}
+			dfs(it,!col);
 		else if(col == color[it])
-			return false;
+			flag=1;
 	}
 
-	return true;
+	
 }
 
 
@@ -73,30 +71,26 @@ int main()
 		adj[y].pb(x);
 
 	}
-	bool check= true;
+
 	for(i=1;i<=n;i++)
 	{
 		if(color[i]==-1)
-		{
-
-			check = dfs(i,0);
-			{
-				if(!check)
-				{
-					cout<<"Not bipartite"<<endl;
-					break;
-				}
-			}
-		}
+			dfs(i,0);
+		
 	}
-	if(check)
+
+	if(flag) cout<<"Not Bipartite"<<endl;
+	
+	if(!flag)
 		{
 			cout<<"Bipartite"<<endl;
+
 			// node with same color 
 			for(i=1;i<=n;i++)
 				if(color[i]==0)
 					cout<<i<<" ";
 			cout<<endl;
+
 			for(i=1;i<=n;i++)
 				if(color[i]==1)
 					cout<<i<<" ";
