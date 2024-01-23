@@ -81,6 +81,9 @@ int main()
 
 	if(flag) cout<<"Not Bipartite"<<endl;
 	
+
+
+	
 	if(!flag)
 		{
 			cout<<"Bipartite"<<endl;

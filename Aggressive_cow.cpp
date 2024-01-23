@@ -12,16 +12,16 @@ Output: 4
 #include <bits/stdc++.h>
 using namespace std;
 
-bool count(vector<int>& position, int d) {
+int count(vector<int>& position, int d) {
         int ans = 1, cur = position[0];
         for (int i = 1; i < position.size(); ++i) {
             if (position[i] - cur >= d) {
                 ans++;
                 cur = position[i];
-                if(ans==d ) return true;
+                
             }
         }
-        return false;
+        return ans;
     }
 
 int maxDistance(vector<int>& position, int m) {
@@ -29,7 +29,7 @@ int maxDistance(vector<int>& position, int m) {
         int l = 0, r = position.back() - position.front();
         while (l <= r) {
             int mid = r - (r - l) / 2;
-            if (count(position, mid))
+            if (count(position, mid)>=m)
                 l = mid+1;
             else
                 r = mid - 1;
