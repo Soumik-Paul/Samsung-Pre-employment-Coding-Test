@@ -21,7 +21,7 @@ void detect(int node)
 		}
 		if(sum<mini)
 		{
-			sum= mini;
+			mini= sum;
 			ans= temp;
 		}
 		return;
