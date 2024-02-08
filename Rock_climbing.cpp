@@ -11,7 +11,7 @@ Output Format
 Single interger "level"
 
 Sample Input 0
-
+1
 5 8
 1 1 1 1 0 0 0 0
 0 0 0 3 0 1 1 1
@@ -26,76 +26,78 @@ Sample Output 0
 */
 #include <bits/stdc++.h>
 using namespace std;
-#define pb push_back
-int vis[20][20]; 
-int mat[11][11];
-int n,m,mini;
-void climb(int x,int y,int cost)
+int n,m,dx,dy,check;
+int vis[60][60];
+int mat[60][60];
+
+void dfs(int i, int j)
 {
-	if(mat[x][y]==3)
-	{
-		mini= min(mini,cost);
-		return;
-	}
+    vis[i][j]=1;
+    int k;
+    for(k=1;k<=check;k++)
+    {
+        if(i-k>=1 && !vis[i-k][j] && mat[i-k][j])
+            dfs(i-k,j);
+        if(i+k<=n && !vis[i+k][j] && mat[i+k][j])
+            dfs(i+k,j);
 
-	vector<pair <int,int> > v;
-	//4 different ways explore
-
-	if(mat[x][y-1]!=0 && y-1>=1) v.pb({x,y-1});
-	if(mat[x][y+1]!=0 && y+1<=m) v.pb({x,y+1});
-	int row =x-1;
-	while(row>=1) // climbing up
-	{
-		if(mat[row][y]!=0) v.pb({row,y});
-		row--;
-	}
-	row= x+1 ; // climbing down
-	while(row<=n) // climbing up
-	{
-		if(mat[row][y]!=0) v.pb({row,y});
-		row++;
-	}
-
-
-	for(auto i : v)
-	{
-		int r,c;
-		r= i.first;
-		c= i.second;
-		if(!vis[r][c])
-		{
-			vis[r][c]++;
-			int temp= abs(x-r);
-			climb(r,c,max(cost,temp));
-			vis[r][c]--;
-		}
-	}
-
+    }
+    if(j-1>=1 && !vis[i][j-1] && mat[i][j-1])
+            dfs(i,j-1);
+        if(j+1<=m && !vis[i][j+1] && mat[i][j+1])
+            dfs(i,j+1);
 }
+
+int go(int mid)
+{
+    check= mid;
+    for(int i=1;i<=n;i++)
+            for(int j=1;j<=m;j++)
+                vis[i][j]=0;
+    dfs(n,1);
+    return vis[dx][dy];
+}
+
 int main()
 {
-	#ifndef ONLINE_JUDGE
+    #ifndef ONLINE_JUDGE
  
     freopen("input.txt", "r", stdin);
  
     freopen("output.txt", "w", stdout);
 
-	#endif
-	mini= INT_MAX;
-
-	cin>>n>>m;
-	int i,j;
-	for(i=1;i<=n;i++)
-		for(j=1;j<=m;j++)
-			cin>>mat[i][j];
-	climb(n,1,0);
-	cout<<mini<<endl;
-	
-
-
-
-
-
-
-	return 0;
+    #endif
+    int tt,i,j;
+    cin>>tt;
+    while(tt--)
+    {
+        int ans=-1;
+        cin>>n>>m;
+        for(i=1;i<=n;i++)
+            for(j=1;j<=m;j++)
+                {
+                    cin>>mat[i][j];
+                    if(mat[i][j]==3)
+                    {
+                        dx=i;
+                        dy=j;
+                    }
+                }
+        int l=0,r=n-1;
+        while(l<=r)
+        {
+            int mid = r-(r-l)/2;
+            if(go(mid))
+            {
+               
+                ans=mid;
+                r= mid-1;
+            }
+            else
+            {
+                    l= mid+1;
+            }
+        }
+        cout<<ans<<endl;
+    }
 }
