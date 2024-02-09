@@ -35,62 +35,62 @@ Sample Output 0
 */
 #include <bits/stdc++.h>
 using namespace std;
-
-int matrix[13][13];
-int mini;
 int n;
+int dp[1<<20][20];
+int mat[20][20];
+int ans;
 
-void tsp(int cur,int rem, int *visited,int cost)
+int tsp(int mask, int pos)
 {
-   if(rem==0){
-       cost+=matrix[cur][1];
-       mini= min(cost,mini);
-       return;
-   }
-
-   for(int i=1;i<=n;i++)
+   //cout<<"Tsp "<<mask<<endl;
+   if(mask == ((1<<n)-1)) // if n = 4 then 1<<4 gives 10000 . so 10000-1=1111
+      return mat[pos][0];
+   if(dp[mask][pos]!=-1) 
+      return dp[mask][pos];
+   int ans= INT_MAX;
+   for(int city=0;city<n;city++)
    {
-      if(!visited[i])
+      if((mask&(1<<city))==0)
       {
-         visited[i]=1;
-         int temp=cost+matrix[cur][i];
-         tsp(i,rem-1,visited,temp);
-         visited[i]=0;
+         
+         int local = mat[pos][city] + tsp(mask|(1<<city),city);
+         ans= min(ans,local);
       }
    }
+   return dp[mask][pos]= ans;
+  
 }
-
-main()
+int main()
 {
-	#ifndef ONLINE_JUDGE
+   #ifndef ONLINE_JUDGE
  
     freopen("input.txt", "r", stdin);
  
     freopen("output.txt", "w", stdout);
 
-	#endif
+   #endif
+    int tt;
+    cin>>tt;
+    while(tt--)
+    {
+     
+      int res=10000000;
+      cin>>n;
+     // cout<<n<<endl;
+      for(int i=0;i<n;i++)
+         for(int j=0;j<n;j++)
+            cin>>mat[i][j];
+         for(int i=0;i<(1<<n);i++)
+            for(int j=0;j<n;j++)
+               dp[i][j]=-1;
+            
+             
+          
+    res = tsp(1,0);
+    cout<<res<<endl;
+        
+         
+    }
 
-  int tt;
-  tt = 1;
-  cin>>tt;
-  while (tt--)
-  { 
    
-   mini=10000000;
-  
-   
-   cin>>n;
-   int visited[20];
-   
-   for(int i=1;i<=n;i++)visited[i]=0;
-
-   for(int i=1;i<=n;i++)
-      for(int j=1;j<=n;j++)
-         cin>>matrix[i][j];
-   
-   visited[1]=1;
-   tsp(1,n-1,visited,0);
-   cout<<mini<<endl;
-
-  }
 }

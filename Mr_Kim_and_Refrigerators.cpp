@@ -53,36 +53,47 @@ struct point{
 	int x,y;
 };
 
+int dis(point a, point b)
+{
+	return abs(a.x-b.x) + abs(a.y-b.y);
+}
+
+int dp[(1<<20)][20];
+
 point cust[20];
 point office,home;
 
 
-void func(int cur,int rem, int *visited,int cost)
+int func(int mask, int pos)
 {
+	//cout<<n<<endl;
 
+	if(mask == ((1 << n) - 1))
+		{
+			//cout<<dis(cust[pos],cust[n+1])<<endl;
+			return dis(cust[pos],cust[n+1]);
+		}
 
-   if(rem==0){
-       cost+=abs(cust[cur].x-home.x)+abs(cust[cur].y-home.y);
-       if(cost<ans) ans= cost;
-       return;
-   }
+	if(dp[mask][pos]!=-1) return dp[mask][pos];
 
-   for(int i=1;i<=n;i++)
-   {
-   	
-      if(!visited[i])
-      {
+	int mini= INT_MAX;
 
-         visited[i]=1;
-         int temp;
-         if(cur==0) 
-         	temp = cost + abs(office.x - cust[i].x)+abs(office.y - cust[i].y);
-         else 
-         	temp = cost + abs(cust[cur].x - cust[i].x)+abs(cust[cur].y - cust[i].y);
-         func(i,rem-1,visited,temp);
-         visited[i]=0;
-      }
-   }
+	for(int i=0;i<n;i++)
+	{
+
+		if((mask&(1<<i))) continue;
+		else
+		{
+			//cout<<i<<endl;
+			int x=dis(cust[i+1],cust[pos]) + func((mask|(1<<i)),i+1);
+			
+			mini= min(mini,x);
+
+		}
+	}
+	return dp[mask][pos]= mini;
+
+  
 }
 main()
 {
@@ -94,23 +105,29 @@ main()
 
 	#endif
 
-	int tt=10,id=0;
+	int tt,id=0;
+	cin>>tt;
 	while(tt--)
 	{
 		id++;
-		int i;
-		ans=10000001;
+		int i,j;
+		//ans=10000001;
 		int vis[20];
 		cin>>n;
 
-		cin>>office.x>>office.y>>home.x>>home.y ;
+		cin>>cust[0].x>>cust[0].y>>cust[n+1].x>>cust[n+1].y ;
 		for(i=1;i<=n;i++){
 			cin>>cust[i].x>>cust[i].y ;
 			vis[i]=0;
 		}
+		 for(int i=0;i<(1<<n+1);i++)
+            for(int j=0;j<n+1;j++)
+               dp[i][j]=-1;
 
-	func(0,n,vis,0);
-	cout << "# " << id<< " " << ans << endl;
+           // memset(dp,-1,sizeof dp);
+
+	int ans1 = func(0,0);
+	cout << "# " << id<< " " << ans1 << endl;
 
 	}
 }
