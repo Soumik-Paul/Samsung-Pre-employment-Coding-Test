@@ -13,11 +13,11 @@ Output: 4
 using namespace std;
 
 int count(vector<int>& position, int d) {
-        int ans = 1, cur = position[0];
+        int ans = 1, last = position[0];
         for (int i = 1; i < position.size(); ++i) {
-            if (position[i] - cur >= d) {
+            if (position[i] - last >= d) {
                 ans++;
-                cur = position[i];
+                last = position[i];
                 
             }
         }

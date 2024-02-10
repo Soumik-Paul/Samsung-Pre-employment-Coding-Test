@@ -9,7 +9,10 @@ You’ll be given a grid as below:
                        1 1 0 0 1
                        x x S x x            
 
-In the grid above, 1: This cell has a coin. 2: This cell has an enemy. 0: It contains nothing. The highlighted(yellow) zone is the control zone. S is a spaceship that we need to control so that we can get maximum coins. Now, S’s initial position will be at the center and we can only move it right or left by one cell or do not move. At each time, the non-highlighted part of the grid will move down by one unit. We can also use a bomb but only once. If we use that, all the enemies in the 5×5 region above the control zone will be killed. If we use a bomb at the very beginning, the grid will look like this:
+In the grid above, 1: This cell has a coin. 2: This cell has an enemy. 0: 
+
+It contains nothing. The highlighted(yellow) zone is the control zone. 
+S is a spaceship that we need to control so that we can get maximum coins. Now, S’s initial position will be at the center and we can only move it right or left by one cell or do not move. At each time, the non-highlighted part of the grid will move down by one unit. We can also use a bomb but only once. If we use that, all the enemies in the 5×5 region above the control zone will be killed. If we use a bomb at the very beginning, the grid will look like this:
 
                        0 1 0 2 0
                        0 0 0 0 1
@@ -109,22 +112,15 @@ void bomb(int x,int y,int cost, bool use, int count)
 		if(row>=1 && row<=n && col>=1 && col<=5){
 
 			//6cases
-			if(mat[row][col]==0 && use == true)
+			if((mat[row][col]==0|| mat[row][col]==1) && use == true)
 			{
-				bomb(row,col,cost,true,count+1);
+				bomb(row,col,cost+mat[row][col],true,count+1);
 			}
-			else if (mat[row][col]==0 && use == false)
+			else if ((mat[row][col]==0||mat[row][col]==1) && use == false)
 			{
-				bomb(row,col,cost,false,count);	
+				bomb(row,col,cost+mat[row][col],false,count);	
 			}
-			else if(mat[row][col]==1 && use == true)
-			{
-				bomb(row,col,cost+1,true,count+1);
-			}
-			else if (mat[row][col]==1 && use == false)
-			{
-				bomb(row,col,cost+1,false,count);	
-			}
+			
 			else if(mat[row][col]==2 && use == true)
 			{
 				if(count>=5) break;
