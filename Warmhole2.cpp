@@ -11,11 +11,12 @@ int dijkstra(int graph[][101], int n){
         dist[i] = inf;
     }
     
-    queue<pair<int,int> > q;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
+   // queue<pair<int,int> > q;
     q.push({0,0});
     
     while(!q.empty()){
-        auto curr = q.front(); q.pop();
+        auto curr = q.top(); q.pop();
         int node = curr.first;
         int wt = curr.second;
         for(int i = 0; i < 2 * n + 2; i++){
